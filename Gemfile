@@ -1,2 +1,8 @@
 source 'https://rubygems.org'
 gem 'sinatra'
+gem 'slim'
+gem 'yaml'
+gem 'openssl'
+gem 'date'
+gem 'json'
+gem 'open-uri'
