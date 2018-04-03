@@ -1,0 +1,17 @@
+div
+  = Date.today.to_s
+  |  This weeks average: 1 BTC = €
+  = @week_av
+ul
+  - @payroll['people'].each do | person |
+    li
+      = person['name']
+      |  does 
+      = person['days_per_week']
+      |  days per week @ €
+      = @payroll['day_rate']
+      |  per day.  Weekly pay is €
+      = person['days_per_week'] * @payroll['day_rate']
+      |  =  
+      = "%.9f" % ((person['days_per_week'] * @payroll['day_rate']) / @week_av)
+      |  BTC

@@ -3,7 +3,7 @@ require 'date'
 require 'open-uri'
 require 'json'
 require 'yaml'
-
+require 'slim'
 require 'sinatra'
 
 
@@ -21,18 +21,11 @@ def week_average
 
 end
 
-def pay_people
-  names = ''
-  payroll = YAML.load_file('payroll.yaml')
-  payroll['people'].each do | person |
-    names = names + person['name'] 
-  end
-  return names
-
-end
 
 get '/' do 
-  erb(:base)
+  @payroll = YAML.load_file('payroll.yaml')
+  @week_av = week_average.to_f
+  slim :index
 end
 
 # since_date = Date.new(2018,3,26).to_time.to_i
