@@ -1,0 +1,9 @@
+day_rate: 200
+people: 
+  - name: alice
+    days_per_week: 1
+  - name: bob
+    days_per_week: 2
+  - name: carol
+    days_per_week: 5
+
