@@ -15,3 +15,10 @@ ul
       |  =  
       = "%.9f" % ((person['days_per_week'] * @payroll['day_rate']) / @week_av)
       |  BTC
+hr
+form action="" id="cakeform" onsubmit="return false;"
+  div class="cont_order"
+    fieldset     
+      | Number of days for this week: 
+      input type="text"  name="quantity" id="quantity" oninput='calculateAmount(#{@payroll['day_rate']},#{@week_av})' 
+      div id="totalPrice"

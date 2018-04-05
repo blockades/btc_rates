@@ -6,7 +6,6 @@ require 'yaml'
 require 'slim'
 require 'sinatra'
 
-
 def week_average
 
   keys = YAML.load_file('keys.yaml')
