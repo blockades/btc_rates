@@ -43,6 +43,14 @@ def week_average
 
 end
 
+def historical_average
+
+  # this gives us hourly rates, highs, lows and averages each hour over the last month
+  # could potentially use this to give us something better than 'weekly average'
+
+  return btc_average_api('https://apiv2.bitcoinaverage.com/indices/global/history/BTCEUR?period=monthly&?format=json')
+
+end
 
 get '/' do 
   @payroll = YAML.load_file('payroll.yaml')
