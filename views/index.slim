@@ -1,7 +1,12 @@
-div
+h2
   = Date.today.to_s
   |  This weeks average: 1 BTC = €
   = @week_av
+div
+  | From exchanges: 
+  - @exchanges.each do | exchange |
+    = exchange
+    |  
 ul
   - @payroll['people'].each do | person |
     li

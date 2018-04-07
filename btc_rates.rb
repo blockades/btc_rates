@@ -6,7 +6,9 @@ require 'yaml'
 require 'slim'
 require 'sinatra'
 
-def week_average
+def btc_average_api(url)
+
+  # grab data from bitcoinaverage api
 
   keys = YAML.load_file('keys.yaml')
   timestamp = Time.now.to_i
@@ -14,21 +16,38 @@ def week_average
   hex_hash = OpenSSL::HMAC.hexdigest('sha256', keys['secret_key'], payload)
   signature = payload + '.' + hex_hash
 
-  ticker_url = 'https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCEUR'
-  response = open(ticker_url, 'X-Signature' => signature).read
-  return JSON.parse(response)['averages']['week']
+  response = open(url, 'X-Signature' => signature).read
+  return JSON.parse(response)
+
+end
+
+def list_exchanges
+
+  # list exchanges which list BTC price in euros. 
+
+  exchanges = []
+  btc_average_api('https://apiv2.bitcoinaverage.com/symbols/exchanges/ticker')['exchanges'].each do | key, value |
+    if value['symbols'].include?('BTCEUR')
+      exchanges.push(value['display_name'])
+    end
+  end
+  return exchanges
+end
+
+
+def week_average
+
+  # give weekly btc/eur average, convert to float
+
+  return btc_average_api('https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCEUR')['averages']['week'].to_f
 
 end
 
 
 get '/' do 
   @payroll = YAML.load_file('payroll.yaml')
-  @week_av = week_average.to_f
+  @week_av = week_average
+  @exchanges = list_exchanges
   slim :index
 end
 
-# since_date = Date.new(2018,3,26).to_time.to_i
-#ticker_url = 'https://apiv2.bitcoinaverage.com/indices/global/history/BTCUSD?since=' + since_date.to_s
-#puts ticker_url
-#response = open(ticker_url, 'X-Signature' => signature).read
-#puts response
