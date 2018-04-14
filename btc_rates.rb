@@ -35,11 +35,11 @@ def list_exchanges
 end
 
 
-def week_average
+def week_average(currency)
 
   # give weekly btc/eur average, convert to float
 
-  return btc_average_api('https://apiv2.bitcoinaverage.com/indices/global/ticker/BTCEUR')['averages']['week'].to_f
+  return btc_average_api("https://apiv2.bitcoinaverage.com/indices/global/ticker/BTC#{currency}")['averages']['week'].to_f
 
 end
 
@@ -53,8 +53,15 @@ def historical_average
 end
 
 get '/' do 
+  @today = Date.today
   @payroll = YAML.load_file('payroll.yaml')
-  @week_av = week_average
+  @week_av = week_average("EUR")
+  
+  @currencies = {}
+  ["NZD","AUD","GBP","USD"].each do |curr|
+    @currencies[curr] = week_average(curr)
+  end 
+
   @exchanges = list_exchanges
   slim :index
 end

@@ -1,54 +1,70 @@
-div class="container"
+p
+center
   h2
-    = Date.today.to_s
+    = (@today - 7).strftime('%a %d %b %Y')
+    |  - 
+    = @today.strftime('%a %d %b %Y')
+  h2
     |  This weeks average: 1 BTC = €
     = @week_av
-  h5
-    | From 
-    a href="https://apiv2.bitcoinaverage.com/"
-      | bitcoinaverage.com
-    |  querying exchanges: 
-  - @exchanges.each do | exchange |
-    = exchange
-    |  
-  hr
-  ul
-    - for i in 1..5
-      li
-        = i
-        |  days per week @ €
-        = @payroll['day_rate']
-        |  per day.  Weekly pay is €
-        = i * @payroll['day_rate']
-        |  =  
-        = "%.9f" % ((i * @payroll['day_rate']) / @week_av)
-        |  BTC 
-        button onclick="copyTextToClipboard(#{"%.9f" % ((i * @payroll['day_rate']) / @week_av)})"
-          | copy to clipboard
-    /- @payroll['people'].each do | person |
-      li
-        = person['name']
-        |  does 
-        = person['days_per_week']
-        |  days per week @ €
-        = @payroll['day_rate']
-        |  per day.  Weekly pay is €
-        = person['days_per_week'] * @payroll['day_rate']
-        |  =  
-        = "%.9f" % ((person['days_per_week'] * @payroll['day_rate']) / @week_av)
-        |  BTC
-  hr
-  form action="" id="cakeform" onsubmit="return false;"
-    div class="cont_order"
-      fieldset     
-        | Number of days for this week: 
-        input type="text"  name="quantity" id="quantity" oninput='outputAmount(#{@payroll['day_rate']},#{@week_av})'
-        |  days per week @ €
-        = @payroll['day_rate']
-        |  per day.  This weeks pay is 
-        span id="totalPrice"
-          | 0.000000000
-        |  BTC  
-        button onclick="copyTextToClipboard(calculateAmount(#{@payroll['day_rate']},#{@week_av}))"
-          | copy to clipboard
+  h4
+    | - 
+    - @currencies.each do | curr,av |
+      = curr
+      |  
+      = av 
+      |  - 
+br
+p
+  b 
+    | Note: 
+  | These are not the current rates, its the average over the last week.
+h5
+  | Source: 
+  a href="https://apiv2.bitcoinaverage.com/"
+    | bitcoinaverage.com
+  |  querying exchanges: 
+- @exchanges.each do | exchange |
+  = exchange
+  |  
+hr
+ul
+  - for i in 1..5
+    li
+      = i
+      |  days per week @ €
+      = @payroll['day_rate']
+      |  per day.  Weekly pay is €
+      = i * @payroll['day_rate']
+      |  =  
+      = "%.9f" % ((i * @payroll['day_rate']) / @week_av)
+      |  BTC 
+      button onclick="copyTextToClipboard(#{"%.9f" % ((i * @payroll['day_rate']) / @week_av)})"
+        | copy to clipboard
+  /- @payroll['people'].each do | person |
+    li
+      = person['name']
+      |  does 
+      = person['days_per_week']
+      |  days per week @ €
+      = @payroll['day_rate']
+      |  per day.  Weekly pay is €
+      = person['days_per_week'] * @payroll['day_rate']
+      |  =  
+      = "%.9f" % ((person['days_per_week'] * @payroll['day_rate']) / @week_av)
+      |  BTC
+hr
+form action="" id="cakeform" onsubmit="return false;"
+  div class="cont_order"
+    fieldset     
+      | Number of days for this week: 
+      input type="text"  name="quantity" id="quantity" oninput='outputAmount(#{@payroll['day_rate']},#{@week_av})'
+      |  days per week @ €
+      = @payroll['day_rate']
+      |  per day.  This weeks pay is 
+      span id="totalPrice"
+        | 0.000000000
+      |  BTC  
+      button onclick="copyTextToClipboard(calculateAmount(#{@payroll['day_rate']},#{@week_av}))"
+        | copy to clipboard
 
