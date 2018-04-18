@@ -10,7 +10,12 @@ def btc_average_api(url)
 
   # grab data from bitcoinaverage api
 
-  keys = YAML.load_file('keys.yaml')
+  #keys = YAML.load_file('keys.yaml')
+  
+  keys['public_key'] = ENV['PUBLIC_BCA']
+  keys['secret_key'] = ENV['SECRET_BCA']
+
+
   timestamp = Time.now.to_i
   payload = timestamp.to_s + "." + keys['public_key']
   hex_hash = OpenSSL::HMAC.hexdigest('sha256', keys['secret_key'], payload)
